@@ -1,0 +1,15 @@
+/build/
+/checkpoints/
+/dumps/
+/output/
+/demo-data/
+/.agents/
+/.codex/
+/.direnv/
+/result
+/.cache/
+*.gguf
+*.pth
+*.profraw
+__pycache__/
+compile_commands.json

@@ -1,0 +1,6 @@
+torch==2.6.0
+numpy==1.26.0
+torchdiffeq==0.2.5
+transformers==4.55.3
+einops==0.8.1
+trimesh==4.7.4

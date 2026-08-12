@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Animate Any Mesh — Local gallery</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="product" href="/" aria-label="Animate Any Mesh home">
+      <span class="product-mark" aria-hidden="true">A</span>
+      <span><strong>Animate Any Mesh</strong><small>Local C++ studio</small></span>
+    </a>
+    <div class="runtime" id="runtime"><i></i><span>Connecting…</span></div>
+    <div class="localai-brand"><span>Powered locally with</span><img src="/localai.png" alt="LocalAI"></div>
+  </header>
+
+  <main class="workspace">
+    <aside class="library panel">
+      <div class="panel-heading">
+        <div><span class="eyebrow">Library</span><h1>Your models</h1></div>
+        <span class="count" id="modelCount">0</span>
+      </div>
+      <label class="dropzone" id="dropzone">
+        <input id="fileInput" type="file" accept=".glb,model/gltf-binary">
+        <span class="upload-icon" aria-hidden="true">↑</span>
+        <strong>Drop a GLB here</strong>
+        <small>or click to choose · <span id="uploadLimit">256 MiB max</span></small>
+        <span class="upload-progress"><i id="uploadProgress"></i></span>
+      </label>
+      <div class="model-grid" id="modelGrid" aria-live="polite"></div>
+      <div class="empty small-empty" id="libraryEmpty">
+        <span class="wire-cube">◇</span>
+        <p>Upload your first model to begin.</p>
+      </div>
+    </aside>
+
+    <section class="stage panel">
+      <div class="stage-toolbar">
+        <div>
+          <span class="eyebrow" id="viewerKind">Preview</span>
+          <h2 id="viewerTitle">No model selected</h2>
+        </div>
+        <div class="stage-actions">
+          <button class="icon-button" id="resetView" title="Reset camera" disabled>⌖</button>
+          <button class="quiet-button" id="showSource" disabled>Original</button>
+        </div>
+      </div>
+      <div class="viewport" id="viewport">
+        <canvas id="viewer" aria-label="Interactive 3D model preview"></canvas>
+        <div class="stage-empty" id="stageEmpty">
+          <span class="hero-orbit"><i></i><b></b></span>
+          <h2>Motion starts with a mesh</h2>
+          <p>Choose a GLB from your gallery or upload a new one.</p>
+        </div>
+        <div class="loading hidden" id="viewerLoading"><i></i><span>Loading geometry…</span></div>
+        <div class="viewer-error hidden" id="viewerError"></div>
+        <div class="viewer-hint" id="viewerHint">Drag to orbit · Scroll to zoom</div>
+      </div>
+      <div class="timeline disabled" id="timeline">
+        <button class="play" id="play" title="Play or pause">▶</button>
+        <span id="currentTime">0:00</span>
+        <input id="scrubber" type="range" min="0" max="1" value="0" step="0.001" aria-label="Animation time">
+        <span id="duration">0:00</span>
+      </div>
+    </section>
+
+    <aside class="inspector panel">
+      <div id="noSelection" class="empty inspector-empty">
+        <span class="spark">✦</span>
+        <h2>Create motion</h2>
+        <p>Select a model to describe how it should move.</p>
+      </div>
+
+      <div id="selection" class="hidden">
+        <div class="selected-heading">
+          <div><span class="eyebrow">Selected model</span><h2 id="modelName"></h2><small id="modelMeta"></small></div>
+          <button class="danger-icon" id="deleteModel" title="Delete model and animations">×</button>
+        </div>
+
+        <form id="animationForm">
+          <label class="field prompt-field"><span>Describe the motion</span>
+            <textarea name="prompt" maxlength="1024" required placeholder="The object is flying"></textarea>
+            <small class="field-help">Use a short, literal caption. The upstream dragon example uses “The object is flying”.</small>
+          </label>
+          <div class="form-row">
+            <label class="field"><span>Seed</span><input name="seed" type="number" min="0" value="666"><small class="field-help">Sampling variation. Seed 666 now matches the pinned upstream CUDA sample in strict parity mode.</small></label>
+            <label class="field"><span>Steps</span><input name="steps" type="number" min="2" max="1024" value="64"><small class="field-help">64 is the upstream default. More steps do not make a longer clip.</small></label>
+          </div>
+          <details>
+            <summary>Advanced settings</summary>
+            <div class="form-row advanced">
+              <label class="field"><span>Guidance</span><input name="guidance" type="number" min="-100" max="100" step="0.1" value="3"><small class="field-help">Prompt strength. Use 3; try 2 for distortion or 4 if motion is ignored.</small></label>
+              <label class="field"><span>FPS</span><input name="fps" type="number" min="1" max="120" step="1" value="10"><small class="field-help">Playback only. 10 matches upstream’s timing for the fixed 16 frames.</small></label>
+              <label class="field"><span>Trajectories</span><input name="trajectories" type="number" min="0" max="16384" value="0"><small class="field-help">0 = automatic. Fewer amplify motion but can deform the shape.</small></label>
+              <label class="field"><span>Inference vertices</span><input name="max_vertices" type="number" min="3" max="16384" value="10000"><small class="field-help">Simplification budget. Higher preserves detail but costs memory and time.</small></label>
+            </div>
+          </details>
+          <button class="generate" id="generate" type="submit"><span>✦</span> Generate animation</button>
+        </form>
+
+        <div class="job hidden" id="job">
+          <div class="job-copy"><i></i><div><strong id="jobTitle">Queued</strong><span id="jobDetail">Waiting for the inference worker…</span></div></div>
+          <div class="job-bar"><i></i></div>
+        </div>
+
+        <div class="history-heading"><div><span class="eyebrow">History</span><h3>Saved animations</h3></div><span class="count" id="animationCount">0</span></div>
+        <div class="animation-list" id="animationList"></div>
+        <div class="empty history-empty" id="historyEmpty"><p>Every animation you create will stay here.</p></div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

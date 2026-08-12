@@ -1,0 +1,40 @@
+add_executable(aam-unit
+    test_main.cpp
+)
+target_link_libraries(aam-unit PRIVATE aam::aam)
+target_include_directories(aam-unit PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_compile_features(aam-unit PRIVATE cxx_std_23)
+add_test(NAME aam-unit COMMAND aam-unit)
+
+add_executable(aam-clip-parity test_clip_parity.cpp)
+target_link_libraries(aam-clip-parity PRIVATE aam::aam ${AAM_GGML_TARGET})
+target_compile_features(aam-clip-parity PRIVATE cxx_std_23)
+add_test(NAME aam-clip-parity COMMAND aam-clip-parity)
+set_tests_properties(aam-clip-parity PROPERTIES SKIP_RETURN_CODE 77)
+
+add_executable(aam-vae-parity test_vae_parity.cpp)
+target_link_libraries(aam-vae-parity PRIVATE aam::aam ${AAM_GGML_TARGET})
+target_include_directories(aam-vae-parity PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_compile_features(aam-vae-parity PRIVATE cxx_std_23)
+add_test(NAME aam-vae-parity COMMAND aam-vae-parity)
+set_tests_properties(aam-vae-parity PROPERTIES SKIP_RETURN_CODE 77)
+
+add_executable(aam-rf-parity test_rf_parity.cpp)
+target_link_libraries(aam-rf-parity PRIVATE aam::aam ${AAM_GGML_TARGET})
+target_include_directories(aam-rf-parity PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_compile_features(aam-rf-parity PRIVATE cxx_std_23)
+add_test(NAME aam-rf-parity COMMAND aam-rf-parity)
+set_tests_properties(aam-rf-parity PROPERTIES SKIP_RETURN_CODE 77)
+
+add_executable(aam-full-parity test_full_parity.cpp)
+target_link_libraries(aam-full-parity PRIVATE aam::aam ${AAM_GGML_TARGET})
+target_include_directories(aam-full-parity PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_compile_features(aam-full-parity PRIVATE cxx_std_23)
+add_test(NAME aam-full-parity COMMAND aam-full-parity)
+set_tests_properties(aam-full-parity PROPERTIES SKIP_RETURN_CODE 77)
+
+add_executable(aam-generate-smoke test_generate_smoke.cpp)
+target_link_libraries(aam-generate-smoke PRIVATE aam::aam)
+target_compile_features(aam-generate-smoke PRIVATE cxx_std_23)
+add_test(NAME aam-generate-smoke COMMAND aam-generate-smoke)
+set_tests_properties(aam-generate-smoke PROPERTIES SKIP_RETURN_CODE 77)

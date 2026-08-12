@@ -1,0 +1,10 @@
+if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "AAM_FUZZ requires Clang")
+endif()
+
+foreach(target fuzz_glb fuzz_fps fuzz_mesh)
+    add_executable(${target} ${target}.cpp)
+    target_link_libraries(${target} PRIVATE aam::aam)
+    target_compile_options(${target} PRIVATE -fsanitize=fuzzer)
+    target_link_options(${target} PRIVATE -fsanitize=fuzzer)
+endforeach()

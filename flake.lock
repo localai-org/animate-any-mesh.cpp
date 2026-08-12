@@ -1,0 +1,45 @@
+{
+  "nodes": {
+    "ggml": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774945736,
+        "narHash": "sha256-x8UuY/YOJXUpzMyIKgmjeaC50Wu0cOQQeF3HyFfOgEY=",
+        "owner": "ggml-org",
+        "repo": "ggml",
+        "rev": "331b9cba52b23d895bc4ad218c007eb5e667540f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ggml-org",
+        "repo": "ggml",
+        "rev": "331b9cba52b23d895bc4ad218c007eb5e667540f",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1786106723,
+        "narHash": "sha256-zDSUbpoeo/9ZmD2+wXnzxoo1+uhL8vxc0b8yuYMKYq0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f13ff45afd1bb73e640eaa08a7066dbed07e3238",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ggml": "ggml",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

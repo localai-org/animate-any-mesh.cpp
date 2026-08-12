@@ -1,0 +1,13 @@
+animate-any-mesh.cpp
+
+This product includes an independent C++ reimplementation of ideas and model
+architecture from AnimateAnyMesh, Copyright the AnimateAnyMesh contributors:
+https://github.com/JarrentWu1031/AnimateAnyMesh
+
+AnimateAnyMesh is distributed under the Apache License, Version 2.0.
+
+This product uses ggml, Copyright the ggml authors:
+https://github.com/ggml-org/ggml
+
+The demo displays the LocalAI logo from the LocalAI project:
+https://github.com/mudler/LocalAI
